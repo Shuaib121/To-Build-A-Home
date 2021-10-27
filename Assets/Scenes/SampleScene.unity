@@ -501,7 +501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 314600064}
   m_Layer: 0
-  m_Name: 3DPController
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3642,7 +3642,7 @@ PrefabInstance:
     - target: {fileID: 7975743059897177012, guid: a5d01796187162347a4d4c91672506b1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5d01796187162347a4d4c91672506b1, type: 3}
