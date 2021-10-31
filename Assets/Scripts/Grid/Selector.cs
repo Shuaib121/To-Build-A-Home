@@ -7,7 +7,7 @@ public class Selector : MonoBehaviour
 {
     private Camera cam;
     public static Selector inst;
-    public GameObject test;
+    public GameObject placementObj;
 
     void Awake()
     {
@@ -24,10 +24,10 @@ public class Selector : MonoBehaviour
         /*if(EventSystem.current.IsPointerOverGameObject())
             return new Vector3(0, -99, 0);*/
 
-        Vector3 fwd = test.transform.TransformDirection(Vector3.forward);
+        Vector3 fwd = placementObj.transform.TransformDirection(Vector3.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(test.transform.position, fwd, out hit, 10))
+        if (Physics.Raycast(placementObj.transform.position, fwd, out hit, 10))
             print("There is something in front of the object!");
 
         Plane plane = new Plane(Vector3.up, Vector3.zero);

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class BuildingPlacer : MonoBehaviour
 {
-    public GameObject test;
+    public GameObject placeableObject;
+    public GameObject aboveHeadPosition;
+    public CharController charController;
 
     private bool currentlyPlacing;
-    private BuildingPreset curBuildingPreset;
 
     private float placementIndicatorUpdateRate = 0.05f;
     private float lastUpdateTime;
@@ -31,38 +32,50 @@ public class BuildingPlacer : MonoBehaviour
         {
             lastUpdateTime = Time.time;
 
-            curPlacementPos = Selector.inst.GetCurTilePosition();
-            placementIndicator.transform.position = curPlacementPos;
-        }
+            curPlacementPos = Selector.inst.GetCurTilePosition();        
 
-        if(currentlyPlacing && Input.GetMouseButtonDown(0))
-        {
-            PlaceBuilding();
-        }
-
-        if (Input.GetKey(KeyCode.P))
-        {
-            BeginNewBuildingPlacement();
+            if (!charController.isInRoom)
+            {
+                placementIndicator.transform.parent = aboveHeadPosition.transform;
+                placementIndicator.transform.position = aboveHeadPosition.transform.position;
+            }
+            else
+            {
+                placementIndicator.transform.parent = null;
+                placementIndicator.transform.position = curPlacementPos;
+                placementIndicator.transform.rotation = Quaternion.identity;
+            }
         }
     }
 
-    public void BeginNewBuildingPlacement()
+    public void BeginNewBuildingPlacement(GameObject placeableObject)
     {
+        this.placeableObject = placeableObject;
         currentlyPlacing = true;
-        //curBuildingPreset = buildingPreset;
-        placementIndicator.SetActive(true);
     }
 
     public void CancelBuildingPlacement()
     {
         currentlyPlacing = false;
-        placementIndicator.SetActive(false);
     }
 
-    void PlaceBuilding()
+    public void PlaceBuilding()
     {
-        GameObject buildingObj = Instantiate(test, curPlacementPos, Quaternion.identity);
+        placeableObject.transform.parent = null;
+        placeableObject.transform.position = curPlacementPos;
 
         CancelBuildingPlacement();
+    }
+
+    public void RotateObject(bool rotateRight)
+    {
+        if (rotateRight)
+        {
+            placeableObject.transform.Rotate(0, 45, 0);
+        }
+        else
+        {
+            placeableObject.transform.Rotate(0, -45, 0);
+        }
     }
 }

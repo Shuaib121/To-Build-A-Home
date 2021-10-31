@@ -6,7 +6,6 @@ public class RangeChecker : MonoBehaviour
 {
     [SerializeField]
     private List<Collider> colliders = new List<Collider>();
-    public List<Collider> GetColliders() { return colliders; }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,5 +17,15 @@ public class RangeChecker : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         colliders.Remove(other);
+    }
+
+    public string GetFirstObjectName()
+    {
+        if(colliders.Count > 0)
+        {
+            return colliders[0].gameObject.name;
+        }
+
+        return "empty";
     }
 }

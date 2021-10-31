@@ -4,6 +4,8 @@ using UnityEngine;
 public class CharController : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 4f;
+    public bool isInRoom = false;
+    public bool hasObject = false;
 
     Vector3 forward, right;
     bool isFaceMethodRunning = false;
