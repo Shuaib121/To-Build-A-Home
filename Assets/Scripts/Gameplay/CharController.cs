@@ -27,6 +27,8 @@ public class CharController : MonoBehaviour
 
     void Move()
     {
+        Debug.Log("working");
+
         Vector3 direction = new Vector3(Input.GetAxis("HorizontalKey"), 0f, Input.GetAxis("VerticalKey"));
 
         Vector3 rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey");
