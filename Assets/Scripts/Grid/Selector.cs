@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
 public class Selector : MonoBehaviour
 {
     private Camera cam;
+    private Vector3 oldPos = Vector3.zero;
+
     public static Selector inst;
     public GameObject placementObj;
+    public BuildingPlacer buildingPlacer;
 
     void Awake()
     {
@@ -17,6 +17,7 @@ public class Selector : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
+        buildingPlacer = (BuildingPlacer)GameObject.Find("GameManager").GetComponent("BuildingPlacer");
     }
 
     public Vector3 GetCurTilePosition()
@@ -35,7 +36,18 @@ public class Selector : MonoBehaviour
         if(plane.Raycast(cam.ScreenPointToRay(cam.WorldToScreenPoint(hit.point)), out rayOut))
         {
             Vector3 newPos = ray.GetPoint(rayOut) - new Vector3(0.5f, 0.0f, 0.5f);
-            return new Vector3(Mathf.CeilToInt(newPos.x), 0, Mathf.CeilToInt(newPos.z));
+            var pos = new Vector3(Mathf.CeilToInt(newPos.x), 0, Mathf.CeilToInt(newPos.z));
+
+            if (buildingPlacer.placedObjects.Contains(pos))
+            {
+                return oldPos;
+            }
+            else
+            {
+                oldPos = pos;
+                return pos;
+            }
+            //return new Vector3(Mathf.CeilToInt(newPos.x), 0, Mathf.CeilToInt(newPos.z));
         }
 
         return new Vector3(0, -99, 0);

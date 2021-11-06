@@ -28,4 +28,9 @@ public class RangeChecker : MonoBehaviour
 
         return "empty";
     }
+
+    public GameObject GetFirstObject()
+    {
+        return colliders[0].gameObject;
+    }
 }

@@ -3342,8 +3342,9 @@ MonoBehaviour:
   placeableObject: {fileID: 0}
   aboveHeadPosition: {fileID: 422274277}
   charController: {fileID: 2107429331}
-  rotSpeed: 3250
-  damping: 75
+  gridSpeed: 300
+  rotSpeed: 300
+  damping: 100
   placementIndicator: {fileID: 1177973972}
 --- !u!114 &1328611714
 MonoBehaviour:

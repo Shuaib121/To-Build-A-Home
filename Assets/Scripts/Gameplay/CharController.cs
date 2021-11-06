@@ -6,6 +6,7 @@ public class CharController : MonoBehaviour
     [SerializeField] float moveSpeed = 4f;
     public bool isInRoom = false;
     public bool hasObject = false;
+    public GameObject heldObject;
     public Joystick joystick;
     public BuildingPlacer buildingPlacer;
     public Transform theDestination;
@@ -28,10 +29,13 @@ public class CharController : MonoBehaviour
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (joystick.Vertical != 0 || joystick.Horizontal != 0)
             Move();
+
+        if (hasObject)
+            PlacingObject();
     }
 
     void Move()
@@ -56,31 +60,26 @@ public class CharController : MonoBehaviour
 
     private void PlacingObject()
     {
-        buildingPlacer.BeginNewBuildingPlacement(this.gameObject);
+        buildingPlacer.BeginNewBuildingPlacement(heldObject);
 
-        this.transform.position = theDestination.position;
-        this.transform.parent = theDestination.transform;
+        heldObject.transform.position = theDestination.position;
+        heldObject.transform.parent = theDestination.transform;
     }
 
     private void PlaceObject()
     {
-        hasObject = false;
         buildingPlacer.PlaceBuilding();
-        GetComponent<Rigidbody>().useGravity = true;
     }
 
     public void PickupOrPlace()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && !hasObject)
+        if (!hasObject)
         {
-            if (rangeChecker.GetFirstObjectName() != this.gameObject.name)
-            {
-                return;
-            }
-
+            heldObject = rangeChecker.GetFirstObject();
+            heldObject.GetComponent<BoxCollider>().isTrigger = true;
             hasObject = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && hasObject && isInRoom)
+        else if (hasObject && isInRoom)
         {
             PlaceObject();
         }
