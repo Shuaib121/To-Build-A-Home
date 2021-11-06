@@ -7,11 +7,14 @@ public class BuildingPlacer : MonoBehaviour
     public GameObject placeableObject;
     public GameObject aboveHeadPosition;
     public CharController charController;
+    public float gridSpeed = 1000;
+    public float rotSpeed = 3250;
+    public float damping = 75;
 
     private bool currentlyPlacing;
-
     private float placementIndicatorUpdateRate = 0.05f;
     private float lastUpdateTime;
+    private float desiredRot;
     private Vector3 curPlacementPos;
 
     public GameObject placementIndicator;
@@ -42,7 +45,8 @@ public class BuildingPlacer : MonoBehaviour
             else
             {
                 placementIndicator.transform.parent = null;
-                placementIndicator.transform.position = curPlacementPos;
+                //placementIndicator.transform.position = curPlacementPos;
+                placementIndicator.transform.position = Vector3.MoveTowards(placementIndicator.transform.position, curPlacementPos, Time.deltaTime * gridSpeed);
                 placementIndicator.transform.rotation = Quaternion.identity;
             }
         }
@@ -51,6 +55,7 @@ public class BuildingPlacer : MonoBehaviour
     public void BeginNewBuildingPlacement(GameObject placeableObject)
     {
         this.placeableObject = placeableObject;
+        desiredRot = placeableObject.transform.eulerAngles.y;
         currentlyPlacing = true;
     }
 
@@ -71,11 +76,17 @@ public class BuildingPlacer : MonoBehaviour
     {
         if (rotateRight)
         {
-            placeableObject.transform.Rotate(0, 45, 0);
+            desiredRot += rotSpeed * Time.deltaTime;
+            var desiredRotQ = Quaternion.Euler(placeableObject.transform.eulerAngles.x, desiredRot, placeableObject.transform.eulerAngles.z);
+            placeableObject.transform.rotation = Quaternion.Lerp(placeableObject.transform.rotation, desiredRotQ, Time.deltaTime * damping);
+            //placeableObject.transform.Rotate(0, 45, 0);
         }
         else
         {
-            placeableObject.transform.Rotate(0, -45, 0);
+            desiredRot -= rotSpeed * Time.deltaTime;
+            var desiredRotQ = Quaternion.Euler(placeableObject.transform.eulerAngles.x, desiredRot, placeableObject.transform.eulerAngles.z);
+            placeableObject.transform.rotation = Quaternion.Lerp(placeableObject.transform.rotation, desiredRotQ, Time.deltaTime * damping);
+            //placeableObject.transform.Rotate(0, -45, 0);
         }
     }
 }

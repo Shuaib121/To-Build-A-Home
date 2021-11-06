@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PickUp : MonoBehaviour
 {
-    public GameObject prefab;
-    public GameObject indicatorPrefab;
     public CharController charController;
 
     public BuildingPlacer buildingPlacer;
@@ -20,14 +18,7 @@ public class PickUp : MonoBehaviour
         rangeChecker = (RangeChecker)GameObject.Find("Range").GetComponent("RangeChecker");
         buildingPlacer = (BuildingPlacer)GameObject.Find("GameManager").GetComponent("BuildingPlacer");
         charController = (CharController)GameObject.Find("Character").GetComponent("CharController");
-        theDestination = GameObject.Find("HideObjects").transform;
-
-
-        if (!indicatorPrefab)
-        {
-            var gameObjectName = this.gameObject.name.Split('_');
-            indicatorPrefab = buildingPlacer.placementIndicator.transform.Find($"{gameObjectName[0]} Variant").gameObject;
-        }
+        theDestination = buildingPlacer.placementIndicator.transform;
     }
 
     private void Update()
@@ -45,25 +36,20 @@ public class PickUp : MonoBehaviour
             }
 
             charController.hasObject = true;
-            indicatorPrefab.transform.rotation = this.gameObject.transform.rotation;
-            indicatorPrefab.SetActive(true);
             isPickedUp = true;
         }
         else if(Input.GetKeyDown(KeyCode.Q) && isPickedUp == true && charController.isInRoom)
         {
             PlaceObject();
-            indicatorPrefab.SetActive(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.R) && isPickedUp && charController.hasObject && charController.isInRoom)
+        if (Input.GetKey(KeyCode.R) && isPickedUp && charController.hasObject && charController.isInRoom)
         {
             buildingPlacer.RotateObject(true);
-            indicatorPrefab.transform.rotation = this.gameObject.transform.rotation;
         }
-        else if (Input.GetKeyDown(KeyCode.E) && isPickedUp && charController.hasObject && charController.isInRoom)
+        else if (Input.GetKey(KeyCode.E) && isPickedUp && charController.hasObject && charController.isInRoom)
         {
             buildingPlacer.RotateObject(false);
-            indicatorPrefab.transform.rotation = this.gameObject.transform.rotation;
         }
     }
 
@@ -81,5 +67,23 @@ public class PickUp : MonoBehaviour
         isPickedUp = false;
         buildingPlacer.PlaceBuilding();
         GetComponent<Rigidbody>().useGravity = true;
+    }
+
+    public void PickupOrPlace()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && isPickedUp == false && !charController.hasObject)
+        {
+            if (rangeChecker.GetFirstObjectName() != this.gameObject.name)
+            {
+                return;
+            }
+
+            charController.hasObject = true;
+            isPickedUp = true;
+        }
+        else if(Input.GetKeyDown(KeyCode.Q) && isPickedUp == true && charController.isInRoom)
+        {
+            PlaceObject();
+        }
     }
 }

@@ -21,9 +21,6 @@ public class Selector : MonoBehaviour
 
     public Vector3 GetCurTilePosition()
     {
-        /*if(EventSystem.current.IsPointerOverGameObject())
-            return new Vector3(0, -99, 0);*/
-
         Vector3 fwd = placementObj.transform.TransformDirection(Vector3.forward);
         RaycastHit hit;
 

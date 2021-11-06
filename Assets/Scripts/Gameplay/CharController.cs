@@ -6,57 +6,83 @@ public class CharController : MonoBehaviour
     [SerializeField] float moveSpeed = 4f;
     public bool isInRoom = false;
     public bool hasObject = false;
+    public Joystick joystick;
+    public BuildingPlacer buildingPlacer;
+    public Transform theDestination;
+    public RangeChecker rangeChecker;
 
-    Vector3 forward, right;
-    bool isFaceMethodRunning = false;
+
+    private Vector3 forward, right;
 
     void Start()
     {
+        rangeChecker = (RangeChecker)GameObject.Find("Range").GetComponent("RangeChecker");
+        buildingPlacer = (BuildingPlacer)GameObject.Find("GameManager").GetComponent("BuildingPlacer");
+        theDestination = buildingPlacer.placementIndicator.transform;
+
         forward = Camera.main.transform.forward;
         forward.y = 0;
         forward = Vector3.Normalize(forward);
-        right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
 
+        // -45 degrees from the world x axis
+        right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
     }
 
     void Update()
     {
-        if (Input.GetAxis("VerticalKey") != 0 || Input.GetAxis("HorizontalKey") != 0)
+        if (joystick.Vertical != 0 || joystick.Horizontal != 0)
             Move();
     }
 
     void Move()
     {
-        Debug.Log("working");
 
-        Vector3 direction = new Vector3(Input.GetAxis("HorizontalKey"), 0f, Input.GetAxis("VerticalKey"));
+        // Movement speed
+        Vector3 rightMovement = right * moveSpeed * joystick.Horizontal;
+        Vector3 upMovement = forward * moveSpeed * joystick.Vertical;
 
-        Vector3 rightMovement = right * moveSpeed * Time.deltaTime * Input.GetAxis("HorizontalKey");
-
-        Vector3 upMovement = forward * moveSpeed * Time.deltaTime * Input.GetAxis("VerticalKey");
-
+        // Calculate what is forward
         Vector3 heading = Vector3.Normalize(rightMovement + upMovement);
 
-        if (!isFaceMethodRunning)
-        {
-            StartCoroutine(FaceDirection(heading));
-        }
+        // Set new position
+        Vector3 newPosition = transform.position;
+        newPosition += rightMovement;
+        newPosition += upMovement;
 
-        transform.position += rightMovement;
-        transform.position += upMovement;
+        // Smoothly move the new position
+        transform.forward = heading;
+        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime);
     }
 
-    IEnumerator FaceDirection(Vector3 heading)
+    private void PlacingObject()
     {
-        isFaceMethodRunning = true;
+        buildingPlacer.BeginNewBuildingPlacement(this.gameObject);
 
-        yield return new WaitForSeconds(0.05f);
+        this.transform.position = theDestination.position;
+        this.transform.parent = theDestination.transform;
+    }
 
-        isFaceMethodRunning = false;
+    private void PlaceObject()
+    {
+        hasObject = false;
+        buildingPlacer.PlaceBuilding();
+        GetComponent<Rigidbody>().useGravity = true;
+    }
 
-        if (Input.GetAxis("VerticalKey") != 0 || Input.GetAxis("HorizontalKey") != 0)
+    public void PickupOrPlace()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && !hasObject)
         {
-            transform.forward = heading;
+            if (rangeChecker.GetFirstObjectName() != this.gameObject.name)
+            {
+                return;
+            }
+
+            hasObject = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Q) && hasObject && isInRoom)
+        {
+            PlaceObject();
         }
     }
 }
