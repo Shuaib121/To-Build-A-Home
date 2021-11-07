@@ -15,6 +15,7 @@ public class CharController : MonoBehaviour
     public RangeChecker rangeChecker;
     public List<GameObject> rotateButtons;
     public AudioScript audioSource;
+    public GameObject animatedCharacter;
 
 
     private Vector3 forward, right;
@@ -36,7 +37,14 @@ public class CharController : MonoBehaviour
     void FixedUpdate()
     {
         if (joystick.Vertical != 0 || joystick.Horizontal != 0)
+        {
             Move();
+        }
+        else
+        {
+            //Set character to stop running with the bool "IsRunning"
+            animatedCharacter.GetComponent<Animator>().SetBool("IsRunning", false);
+        }
 
         if (hasObject)
             PlacingObject();
@@ -61,6 +69,8 @@ public class CharController : MonoBehaviour
 
     void Move()
     {
+        //Set character to start running with the bool "IsRunning"
+        animatedCharacter.GetComponent<Animator>().SetBool("IsRunning", true);
 
         // Movement speed
         Vector3 rightMovement = right * moveSpeed * joystick.Horizontal;
