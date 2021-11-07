@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
+    public GameObject roomRoof;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent<CharController>(out CharController charController))
         {
             charController.isInRoom = true;
+            roomRoof.SetActive(false);
         }
     }
 
@@ -17,6 +20,7 @@ public class Room : MonoBehaviour
         if (other.gameObject.TryGetComponent<CharController>(out CharController charController))
         {
             charController.isInRoom = false;
+            roomRoof.SetActive(true);
         }
     }
 }

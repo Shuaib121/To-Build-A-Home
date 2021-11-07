@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CharController : MonoBehaviour
@@ -11,6 +13,7 @@ public class CharController : MonoBehaviour
     public BuildingPlacer buildingPlacer;
     public Transform theDestination;
     public RangeChecker rangeChecker;
+    public List<GameObject> rotateButtons;
 
 
     private Vector3 forward, right;
@@ -36,6 +39,23 @@ public class CharController : MonoBehaviour
 
         if (hasObject)
             PlacingObject();
+
+        if(hasObject && isInRoom)
+        {
+            ToggleRotateButtons(true);
+        }
+        else
+        {
+            ToggleRotateButtons(false);
+        }
+    }
+
+    private void ToggleRotateButtons(bool toggle)
+    {
+        foreach(GameObject button in rotateButtons)
+        {
+            button.SetActive(toggle);
+        }
     }
 
     void Move()
