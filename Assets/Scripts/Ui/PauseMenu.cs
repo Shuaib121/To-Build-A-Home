@@ -1,30 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
+    public AudioScript audioSource;
+    public GameObject pauseMenu;
+    public List<GameObject> hideUiItems;
 
-    [SerializeField] GameObject pauseMenu = null;
-
-    bool isPaused;
-
-    // Start is called before the first frame update
-    void Start()
+    public void Reset()
     {
-      
+        audioSource.PlaySound(2);
+        pauseMenu.SetActive(false);
+        PlayerPrefs.DeleteAll();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Pause()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        audioSource.PlaySound(2);
+        foreach(GameObject uiItem in hideUiItems)
         {
-            isPaused = !isPaused;
-            Time.timeScale = isPaused ? 0 : 1;
-            pauseMenu.SetActive(isPaused);
+            uiItem.SetActive(false);
         }
 
+        pauseMenu.SetActive(true);
+    }
 
+    public void Continue()
+    {
+        audioSource.PlaySound(2);
+        foreach (GameObject uiItem in hideUiItems)
+        {
+            uiItem.SetActive(true);
+        }
+
+        pauseMenu.SetActive(false);
+    }
+
+    public void Close()
+    {
+        Application.Quit();
     }
 }

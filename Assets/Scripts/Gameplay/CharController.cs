@@ -14,6 +14,7 @@ public class CharController : MonoBehaviour
     public Transform theDestination;
     public RangeChecker rangeChecker;
     public List<GameObject> rotateButtons;
+    public AudioScript audioSource;
 
 
     private Vector3 forward, right;
@@ -97,10 +98,14 @@ public class CharController : MonoBehaviour
         {
             heldObject = rangeChecker.GetFirstObject();
             heldObject.GetComponent<BoxCollider>().isTrigger = true;
+
+            if(heldObject != null) audioSource.PlaySound(1);
+
             hasObject = true;
         }
         else if (hasObject && isInRoom)
         {
+            audioSource.PlaySound(1);
             PlaceObject();
         }
     }
