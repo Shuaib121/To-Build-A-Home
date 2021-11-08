@@ -760,6 +760,7 @@ GameObject:
   - component: {fileID: 479522671}
   - component: {fileID: 479522673}
   - component: {fileID: 479522672}
+  - component: {fileID: 479522674}
   m_Layer: 5
   m_Name: Char
   m_TagString: Untagged
@@ -824,6 +825,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 479522670}
   m_CullTransparentMesh: 1
+--- !u!95 &479522674
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479522670}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f25a66a898e47814b9f78d491cb1a6e1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &677091193
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,6 +936,7 @@ GameObject:
   - component: {fileID: 770661293}
   - component: {fileID: 770661295}
   - component: {fileID: 770661294}
+  - component: {fileID: 770661296}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -980,6 +1001,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770661292}
   m_CullTransparentMesh: 1
+--- !u!95 &770661296
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770661292}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ce20593621e3fa54589c8e46e8c2bf0b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &943324165
 GameObject:
   m_ObjectHideFlags: 0
@@ -1746,8 +1786,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1526827299}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: Game
+        m_TargetAssemblyTypeName: SceneChange, Assembly-CSharp
+        m_MethodName: Story
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
