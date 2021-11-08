@@ -7,7 +7,7 @@ public class DestroyObj : MonoBehaviour
     public GameObject RemoveMe;
     void Start()
     {
-        StartCoroutine(ShowAndHide(4.0f));
+        StartCoroutine(ShowAndHide(6.0f));
     }
     IEnumerator ShowAndHide(float delay)
     {
